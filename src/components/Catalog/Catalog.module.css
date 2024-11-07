@@ -2,5 +2,6 @@
     display: flex;
     flex-wrap: wrap;
     gap: 36px;
-    justify-content: center
+    justify-content: center;
+    background-color: #FFFFFF;
 }

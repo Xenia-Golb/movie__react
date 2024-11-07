@@ -1,21 +1,21 @@
 import s from './Catalog.module.css'
-import { data } from './data';
 import Card from '../Card/Card';
-function Catalog() {
-    const movies = data;
+function Catalog({ movies }) {
 
     return (<div className={s['catalog-container']}>
-        {
-            movies.map((movie, index) => (
+        {movies.length > 0 ? (
+            movies.map((movie) => (
                 <Card
-                    key={index}
-                    image={movie.image}
+                    key={movie.id}
+                    image={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
                     title={movie.title}
-                    date={movie.date}
-                    description={movie.description}
+                    date={movie.release_date.split('-')[0]}
+                    description={movie.overview}
                 />
             ))
-        }
+        ) : (
+            <p>Loading movies...</p>
+        )}
     </div>);
 }
 
