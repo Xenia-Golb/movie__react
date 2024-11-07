@@ -1,4 +1,5 @@
 .app {
   padding-left: calc(50% - 570px);
   padding-right: calc(50% - 570px);
+  font-family: "Inter", sans-serif;
 }
