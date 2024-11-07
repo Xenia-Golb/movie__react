@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import Catalog from './components/Catalog/Catalog';
-import { Alert, Spin } from 'antd';
+import { Input, Tabs, Spin, Alert } from 'antd';
 
 function App() {
   const apiKey = import.meta.env.VITE_API_KEY;
@@ -31,8 +31,26 @@ function App() {
     }
   };
 
+  const tabItems = [
+    {
+      key: '1',
+      label: 'Search',
+      children: (
+        <div className="app-container">
+          <Input className="custom-input" placeholder="Type to search ..." />
+          <Catalog movies={movies} />
+        </div>
+      ),
+    },
+    {
+      key: '2',
+      label: 'Rated',
+      children: <div>Rated Content Coming Soon</div>,
+    },
+  ];
+
   return (
-    <div className="app">
+    <div>
       {loading && movies.length === 0 ? (
         <div className="loading-container">
           <Spin size="large" />
@@ -50,7 +68,10 @@ function App() {
               onClose={() => setError(null)}
             />
           )}
-          {!loading && !error && <Catalog movies={movies} />}
+
+          {!loading && !error && (
+            <Tabs defaultActiveKey="1" centered items={tabItems} />
+          )}
         </>
       )}
     </div>

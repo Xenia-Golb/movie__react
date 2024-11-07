@@ -2,12 +2,14 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
 }
 
-.app {
-  padding-left: calc(50% - 570px);
-  padding-right: calc(50% - 570px);
-  font-family: 'Inter', sans-serif;
+.app-container {
+  display: flex;
+  flex-direction: column;
+  gap: 34px;
+  align-items: center;
 }
 
 .loading-container {
@@ -15,4 +17,28 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
+}
+
+.ant-tabs {
+  border-radius: 10px;
+  padding: 32px;
+}
+
+.ant-tabs-tab {
+  color: white;
+  font-weight: 400;
+  size: 14px;
+  line-height: 22px;
+}
+
+.ant-tabs-tabpane {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 0 0 10px 10px;
+}
+
+.custom-input {
+  width: 52vw;
+  font-size: 16px;
+  padding: 9px 12px;
 }
