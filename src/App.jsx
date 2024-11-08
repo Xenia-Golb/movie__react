@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import Catalog from './components/Catalog/Catalog';
-import { Input, Tabs, Spin, Alert } from 'antd';
+import { Input, Tabs, Spin, Alert, Pagination } from 'antd';
 
 function App() {
   const apiKey = import.meta.env.VITE_API_KEY;
@@ -39,6 +39,7 @@ function App() {
         <div className="app-container">
           <Input className="custom-input" placeholder="Type to search ..." />
           <Catalog movies={movies} />
+          <Pagination defaultCurrent={1} total={50} />
         </div>
       ),
     },
@@ -50,7 +51,7 @@ function App() {
   ];
 
   return (
-    <div>
+    <div className="app">
       {loading && movies.length === 0 ? (
         <div className="loading-container">
           <Spin size="large" />
