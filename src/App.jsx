@@ -2,21 +2,29 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import Catalog from './components/Catalog/Catalog';
 import { Input, Tabs, Spin, Alert, Pagination } from 'antd';
+import { debounce } from 'lodash';
 
 function App() {
   const apiKey = import.meta.env.VITE_API_KEY;
-  const baseUrl = `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=en-US&page=`;
+  const baseUrl = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=en-US&page=`;
 
   const [movies, setMovies] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
-  const fetchData = async (page) => {
+  const fetchData = async (query, page = 1) => {
+    if (!query) {
+      setMovies([]);
+      setTotalPages(1);
+      return;
+    }
+    setLoading(true);
+    setError(null);
     try {
-      setLoading(true);
-      const response = await fetch(`${baseUrl}${page}`);
+      const response = await fetch(`${baseUrl}${page}&query=${query}`);
       if (!response.ok) {
         throw new Error('Failed to fetch data');
       }
@@ -30,9 +38,33 @@ function App() {
     }
   };
 
+  const debouncedSearch = debounce((query) => {
+    fetchData(query, 1);
+  }, 300);
+
+  const handleSearchChange = (event) => {
+    const query = event.target.value;
+    setSearchQuery(query);
+    debouncedSearch(query);
+  };
+
   useEffect(() => {
-    fetchData(currentPage);
-  }, [currentPage]);
+    if (searchQuery) {
+      fetchData(searchQuery, currentPage);
+    }
+  }, [currentPage, searchQuery]);
+
+  const renderNoResults = () => {
+    if (searchQuery && !loading && movies.length === 0) {
+      return <Alert message="No results found" type="info" />;
+    }
+  };
+
+  const renderError = () => {
+    if (error) {
+      return <Alert message="Error" description={error} type="error" />;
+    }
+  };
 
   const tabItems = [
     {
@@ -40,7 +72,15 @@ function App() {
       label: 'Search',
       children: (
         <div className="app-container">
-          <Input className="custom-input" placeholder="Type to search ..." />
+          <Input
+            className="custom-input"
+            placeholder="Type to search ..."
+            value={searchQuery}
+            onChange={handleSearchChange}
+          />
+          {loading && <Spin size="large" />}
+          {renderError()}
+          {renderNoResults()}
           <Catalog movies={movies} />
           <Pagination
             current={currentPage}
@@ -48,6 +88,8 @@ function App() {
             onChange={(page) => setCurrentPage(page)}
             pageSize={6}
             showSizeChanger={false}
+            hideOnSinglePage={true}
+            disabled={loading}
           />
         </div>
       ),
@@ -61,29 +103,7 @@ function App() {
 
   return (
     <div className="app">
-      {loading && movies.length === 0 ? (
-        <div className="loading-container">
-          <Spin size="large" />
-        </div>
-      ) : (
-        <>
-          {error && (
-            <Alert
-              message="Error"
-              description={error}
-              type="error"
-              showIcon
-              closable
-              style={{ marginTop: 300 }}
-              onClose={() => setError(null)}
-            />
-          )}
-
-          {!loading && !error && (
-            <Tabs defaultActiveKey="1" centered items={tabItems} />
-          )}
-        </>
-      )}
+      <Tabs defaultActiveKey="1" centered items={tabItems} />
     </div>
   );
 }
