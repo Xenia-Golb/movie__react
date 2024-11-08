@@ -38,14 +38,14 @@ function App() {
     }
   };
 
-  const debouncedSearch = debounce((query) => {
-    fetchData(query, 1);
+  const debouncedSearch = debounce((query, page) => {
+    fetchData(query, page);
   }, 300);
 
   const handleSearchChange = (event) => {
     const query = event.target.value;
     setSearchQuery(query);
-    debouncedSearch(query);
+    debouncedSearch(query, currentPage);
   };
 
   useEffect(() => {
@@ -58,6 +58,7 @@ function App() {
     if (searchQuery && !loading && movies.length === 0) {
       return <Alert message="No results found" type="info" />;
     }
+    return null;
   };
 
   const renderError = () => {
@@ -85,7 +86,10 @@ function App() {
           <Pagination
             current={currentPage}
             total={totalPages}
-            onChange={(page) => setCurrentPage(page)}
+            onChange={(page) => {
+              setCurrentPage(page);
+              debouncedSearch(searchQuery, page);
+            }}
             pageSize={6}
             showSizeChanger={false}
             hideOnSinglePage={true}
