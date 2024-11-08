@@ -5,31 +5,34 @@ import { Input, Tabs, Spin, Alert, Pagination } from 'antd';
 
 function App() {
   const apiKey = import.meta.env.VITE_API_KEY;
-  const url = `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=en-US&page=1`;
+  const baseUrl = `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=en-US&page=`;
 
   const [movies, setMovies] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
+  const fetchData = async (page) => {
     try {
       setLoading(true);
-      const response = await fetch(url);
+      const response = await fetch(`${baseUrl}${page}`);
       if (!response.ok) {
         throw new Error('Failed to fetch data');
       }
       const data = await response.json();
       setMovies(data.results);
+      setTotalPages(data.total_pages);
     } catch (error) {
       setError(error.message);
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchData(currentPage);
+  }, [currentPage]);
 
   const tabItems = [
     {
@@ -39,7 +42,13 @@ function App() {
         <div className="app-container">
           <Input className="custom-input" placeholder="Type to search ..." />
           <Catalog movies={movies} />
-          <Pagination defaultCurrent={1} total={50} />
+          <Pagination
+            current={currentPage}
+            total={totalPages}
+            onChange={(page) => setCurrentPage(page)}
+            pageSize={6}
+            showSizeChanger={false}
+          />
         </div>
       ),
     },
