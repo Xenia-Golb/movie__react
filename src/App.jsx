@@ -101,7 +101,13 @@ function App() {
     {
       key: '2',
       label: 'Rated',
-      children: <div>Rated Content Coming Soon</div>,
+      children: (
+        <>
+          {loading && <Spin size="large" />}
+          {renderError()}
+          {renderNoResults()}
+        </>
+      ),
     },
   ];
 

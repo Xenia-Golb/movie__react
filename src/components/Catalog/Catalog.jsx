@@ -3,11 +3,20 @@ import s from './Catalog.module.css';
 import Card from '../Card/Card';
 import { format } from 'date-fns';
 import defaultImage from './img/defaultImage.jpg';
+import { useMovieContext } from '../../context/MovieContext';
 
 function Catalog({ movies }) {
-  const defaultPoster = defaultImage;
+  const { genres } = useMovieContext();
 
-  // Функция для форматирования даты
+  const getGenres = (genreIds) => {
+    return genreIds
+      .map((id) => {
+        const genre = genres.find((genre) => genre.id === id);
+        return genre ? genre.name : null;
+      })
+      .filter((name) => name !== null);
+  };
+
   const formatDate = (date) => {
     if (!date) return ' ';
     const parsedDate = new Date(date);
@@ -15,8 +24,7 @@ function Catalog({ movies }) {
     return format(parsedDate, 'dd MMM yyyy');
   };
 
-  // Функция для обрезки текста
-  function truncateText(text, maxLength = 160) {
+  function truncateText(text, maxLength = 100) {
     if (text.length <= maxLength) return text;
     let truncated = text.slice(0, maxLength);
 
@@ -37,7 +45,9 @@ function Catalog({ movies }) {
       {movies.map((movie) => {
         const imageUrl = movie.poster_path
           ? `https://image.tmdb.org/t/p/w200${movie.poster_path}`
-          : defaultPoster;
+          : defaultImage;
+
+        const genreList = getGenres(movie.genre_ids);
 
         return (
           <Card
@@ -45,6 +55,19 @@ function Catalog({ movies }) {
             image={imageUrl}
             title={movie.title}
             date={formatDate(movie.release_date)}
+            genre={
+              genreList.length > 0 ? (
+                <div className={s.genres}>
+                  {genreList.map((genre, index) => (
+                    <span className={s.genre} key={index}>
+                      {genre}
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                <span>No genres available</span>
+              )
+            }
             description={truncateText(movie.overview)}
           />
         );
