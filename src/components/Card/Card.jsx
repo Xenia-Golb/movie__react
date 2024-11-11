@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import s from './Card.module.css';
-function Card({ title, date, description, image, genre }) {
+function Card({ title, date, description, image, genre, rating, addRate }) {
   return (
     <div className={s['card-movie']}>
       <img className={s['card-movie__img']} src={image} alt="Movie poster" />
@@ -9,7 +9,9 @@ function Card({ title, date, description, image, genre }) {
         <p className={s['date']}>{date}</p>
         <div className={s['genres']}>{genre}</div>
         <p className={s['description']}>{description}</p>
+        <div>{addRate}</div>
       </div>
+      <div>{rating}</div>
     </div>
   );
 }

@@ -4,6 +4,14 @@ import Card from '../Card/Card';
 import { format } from 'date-fns';
 import defaultImage from './img/defaultImage.jpg';
 import { useMovieContext } from '../../context/MovieContext';
+import { Rate } from 'antd';
+
+const getRatingColor = (rating) => {
+  if (rating <= 3) return '#E90000';
+  if (rating <= 5) return '#E97E00';
+  if (rating <= 7) return '#E9D100';
+  return '#66E900';
+};
 
 function Catalog({ movies }) {
   const { genres } = useMovieContext();
@@ -50,26 +58,40 @@ function Catalog({ movies }) {
         const genreList = getGenres(movie.genre_ids);
 
         return (
-          <Card
-            key={movie.id}
-            image={imageUrl}
-            title={movie.title}
-            date={formatDate(movie.release_date)}
-            genre={
-              genreList.length > 0 ? (
-                <div className={s.genres}>
-                  {genreList.map((genre, index) => (
-                    <span className={s.genre} key={index}>
-                      {genre}
-                    </span>
-                  ))}
+          <>
+            <Card
+              key={movie.id}
+              image={imageUrl}
+              title={movie.title}
+              date={formatDate(movie.release_date)}
+              genre={
+                genreList.length > 0 ? (
+                  <div className={s.genres}>
+                    {genreList.map((genre) => (
+                      <span className={s.genre} key={genre.id}>
+                        {genre}
+                      </span>
+                    ))}
+                  </div>
+                ) : (
+                  ''
+                )
+              }
+              description={truncateText(movie.overview)}
+              className={s['card-movie']}
+              rating={
+                <div
+                  className={s['rating-circle']}
+                  style={{
+                    backgroundColor: getRatingColor(movie.vote_average),
+                  }}
+                >
+                  {movie.vote_average.toFixed(1)}
                 </div>
-              ) : (
-                <span>No genres available</span>
-              )
-            }
-            description={truncateText(movie.overview)}
-          />
+              }
+              addRate={<Rate />}
+            />
+          </>
         );
       })}
     </div>

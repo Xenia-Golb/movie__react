@@ -1,19 +1,24 @@
 .card-movie {
-  max-width: 451px;
-  max-height: 259px;
+  min-width: 451px;
+  max-height: 299px;
   display: flex;
+  gap: 5px;
   box-shadow: 0px 4px 12px 0px #00000026;
+  position: relative;
+  display: flex;
 
   .card-movie__img {
     height: 100%;
+    object-fit: cover;
   }
 
   .card-movie__info {
     padding: 10px 20px 49px 20px;
     display: flex;
     flex-direction: column;
-    gap: 9px;
+    gap: 5px;
     text-align: left;
+    max-width: 238px;
 
     .title {
       font-weight: 400;
