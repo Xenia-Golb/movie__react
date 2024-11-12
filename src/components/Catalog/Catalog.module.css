@@ -7,10 +7,6 @@
   background-color: #ffffff;
 }
 
-.movie-card {
-  position: relative;
-}
-
 .genres {
   display: flex;
   flex-direction: row;
@@ -45,4 +41,12 @@
   color: white;
   font-weight: bold;
   font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .catalog-container {
+    grid-template-columns: 1fr;
+    width: 100%;
+    margin-bottom: 50px;
+  }
 }

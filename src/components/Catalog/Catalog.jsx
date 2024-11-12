@@ -14,8 +14,7 @@ const getRatingColor = (rating) => {
 };
 
 function Catalog({ movies }) {
-  const { genres } = useMovieContext();
-  const { rateMovie } = useMovieContext();
+  const { rateMovie, genres } = useMovieContext();
 
   const getGenres = (genreIds) => {
     return genreIds

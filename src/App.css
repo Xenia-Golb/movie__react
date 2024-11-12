@@ -64,3 +64,14 @@
 .ant-pagination .ant-pagination-item-active a {
   color: #ffffff;
 }
+
+@media (max-width: 768px) {
+  .app-container {
+    gap: 0px;
+    padding: 0;
+  }
+
+  .ant-tabs {
+    padding: 0px;
+  }
+}
