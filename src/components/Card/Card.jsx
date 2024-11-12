@@ -1,17 +1,26 @@
 /* eslint-disable react/prop-types */
 import s from './Card.module.css';
+
 function Card({ title, date, description, image, genre, rating, addRate }) {
   return (
     <div className={s['card-movie']}>
-      <img className={s['card-movie__img']} src={image} alt="Movie poster" />
+      <img
+        className={s['card-movie__img']}
+        src={image}
+        alt={`${title} poster`}
+        onError={(e) => {
+          e.target.src = './img/defaultImage.jpg';
+          e.target.alt = 'Default movie poster';
+        }}
+      />
       <div className={s['card-movie__info']}>
         <h3 className={s['title']}>{title}</h3>
         <p className={s['date']}>{date}</p>
         <div className={s['genres']}>{genre}</div>
         <p className={s['description']}>{description}</p>
-        <div>{addRate}</div>
+        <div className={s['rate']}>{addRate}</div>
       </div>
-      <div>{rating}</div>
+      <div className={s['rating']}>{rating}</div>
     </div>
   );
 }

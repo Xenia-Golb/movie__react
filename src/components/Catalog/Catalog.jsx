@@ -2,7 +2,7 @@
 import s from './Catalog.module.css';
 import Card from '../Card/Card';
 import { format } from 'date-fns';
-import defaultImage from './img/defaultImage.jpg';
+import defaultImage from '../Card/img/defaultImage.jpg';
 import { useMovieContext } from '../../context/MovieContext';
 import { Rate } from 'antd';
 
@@ -15,6 +15,7 @@ const getRatingColor = (rating) => {
 
 function Catalog({ movies }) {
   const { genres } = useMovieContext();
+  const { rateMovie } = useMovieContext();
 
   const getGenres = (genreIds) => {
     return genreIds
@@ -58,40 +59,43 @@ function Catalog({ movies }) {
         const genreList = getGenres(movie.genre_ids);
 
         return (
-          <>
-            <Card
-              key={movie.id}
-              image={imageUrl}
-              title={movie.title}
-              date={formatDate(movie.release_date)}
-              genre={
-                genreList.length > 0 ? (
-                  <div className={s.genres}>
-                    {genreList.map((genre) => (
-                      <span className={s.genre} key={genre.id}>
-                        {genre}
-                      </span>
-                    ))}
-                  </div>
-                ) : (
-                  ''
-                )
-              }
-              description={truncateText(movie.overview)}
-              className={s['card-movie']}
-              rating={
-                <div
-                  className={s['rating-circle']}
-                  style={{
-                    backgroundColor: getRatingColor(movie.vote_average),
-                  }}
-                >
-                  {movie.vote_average.toFixed(1)}
+          <Card
+            key={movie.id}
+            image={imageUrl}
+            title={movie.title}
+            date={formatDate(movie.release_date)}
+            genre={
+              genreList.length > 0 ? (
+                <div className={s.genres}>
+                  {genreList.map((genre) => (
+                    <span className={s.genre} key={genre}>
+                      {genre}
+                    </span>
+                  ))}
                 </div>
-              }
-              addRate={<Rate />}
-            />
-          </>
+              ) : (
+                ''
+              )
+            }
+            description={truncateText(movie.overview)}
+            className={s['card-movie']}
+            rating={
+              <div
+                className={s['rating-circle']}
+                style={{
+                  backgroundColor: getRatingColor(movie.vote_average),
+                }}
+              >
+                {movie.vote_average.toFixed(1)}
+              </div>
+            }
+            addRate={
+              <Rate
+                defaultValue={movie.rating}
+                onChange={(value) => rateMovie(movie, value)}
+              />
+            }
+          />
         );
       })}
     </div>

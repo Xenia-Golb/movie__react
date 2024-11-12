@@ -1,59 +1,47 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import './App.css';
 import Catalog from './components/Catalog/Catalog';
 import { Input, Tabs, Spin, Alert, Pagination } from 'antd';
 import { debounce } from 'lodash';
+import { useMovieContext } from './context/MovieContext';
+import useFetchMovies from './hooks/useFetchMovies';
 
 function App() {
   const apiKey = import.meta.env.VITE_API_KEY;
   const baseUrl = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=en-US&page=`;
 
-  const [movies, setMovies] = useState([]);
+  const {
+    ratedMovies,
+    loading: contextLoading,
+    error: contextError,
+  } = useMovieContext();
   const [searchQuery, setSearchQuery] = useState('');
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  const { movies, totalPages, loading, error, fetchData } =
+    useFetchMovies(baseUrl);
 
-  const fetchData = async (query, page = 1) => {
-    if (!query) {
-      setMovies([]);
-      setTotalPages(1);
-      return;
-    }
-    setLoading(true);
-    setError(null);
-    try {
-      const response = await fetch(`${baseUrl}${page}&query=${query}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch data');
-      }
-      const data = await response.json();
-      setMovies(data.results);
-      setTotalPages(data.total_pages);
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Дебаунс обработчик для поиска
+  const debouncedFetchData = useCallback(
+    debounce((query, page) => fetchData(query, page), 300),
+    [fetchData],
+  );
 
-  const debouncedSearch = debounce((query, page) => {
-    fetchData(query, page);
-  }, 300);
-
-  const handleSearchChange = (event) => {
-    const query = event.target.value;
+  // Обработка изменения строки поиска
+  const handleSearchChange = (e) => {
+    const query = e.target.value;
     setSearchQuery(query);
-    debouncedSearch(query, currentPage);
+    setCurrentPage(1);
+    debouncedFetchData(query, 1);
   };
 
+  // Запуск поиска при изменении `searchQuery` или `currentPage`
   useEffect(() => {
     if (searchQuery) {
       fetchData(searchQuery, currentPage);
     }
-  }, [currentPage, searchQuery]);
+  }, [currentPage, searchQuery, fetchData]);
 
+  // Рендер сообщения о пустых результатах
   const renderNoResults = () => {
     if (searchQuery && !loading && movies.length === 0) {
       return <Alert message="No results found" type="info" />;
@@ -61,12 +49,15 @@ function App() {
     return null;
   };
 
+  // Рендер ошибки
   const renderError = () => {
-    if (error) {
-      return <Alert message="Error" description={error} type="error" />;
-    }
+    const message = error || contextError;
+    return message ? (
+      <Alert message="Error" description={message} type="error" />
+    ) : null;
   };
 
+  // Конфигурация табов
   const tabItems = [
     {
       key: '1',
@@ -88,7 +79,7 @@ function App() {
             total={totalPages}
             onChange={(page) => {
               setCurrentPage(page);
-              debouncedSearch(searchQuery, page);
+              debouncedFetchData(searchQuery, page);
             }}
             pageSize={6}
             showSizeChanger={false}
@@ -103,9 +94,13 @@ function App() {
       label: 'Rated',
       children: (
         <>
-          {loading && <Spin size="large" />}
+          {contextLoading && <Spin size="large" />}
           {renderError()}
-          {renderNoResults()}
+          {ratedMovies.length === 0 && !contextLoading ? (
+            <Alert message="No rated movies" type="info" />
+          ) : (
+            <Catalog movies={ratedMovies} />
+          )}
         </>
       ),
     },
