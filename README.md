@@ -35,3 +35,10 @@ Movie Catalog — это приложение для поиска и оценк�
     ```bash
     npm run dev
 ## Скриншоты
+
+![layout](/public/search.png);
+
+![layout](/public/rated.png);
+
+## Сайт 
+https://xenia-golb.github.io/movie__react/
