@@ -1,9 +1,37 @@
-# React + Vite
+# Movie Catalog
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Описание**  
+Movie Catalog — это приложение для поиска и оценки фильмов с использованием API The Movie Database (TMDb). Приложение позволяет пользователям искать фильмы, просматривать информацию о них, добавлять их в список оцененных фильмов и выставлять рейтинг с помощью гостевой сессии.
 
-Currently, two official plugins are available:
+## Функциональность
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-# movie__react
+- **Поиск фильмов**: Пользователи могут искать фильмы по названию с возможностью постраничной навигации.
+- **Оценка фильмов**: Фильмы можно оценивать, и оценки сохраняются в списке оцененных фильмов.
+- **Список жанров**: При загрузке приложения загружается список жанров, и соответствующие жанры отображаются на карточках фильмов.
+- **Адаптивный интерфейс**: Приложение оптимизировано для мобильных устройств и планшетов, что делает его удобным для пользователей с разными экранами.
+
+## Стек технологий
+
+- **Frontend**: React
+- **UI-библиотека**: Ant Design
+- **Стилевые решения**: CSS (Flexbox и Media Queries для адаптивности)
+- **Библиотеки**: lodash для оптимизации ввода (debounce), date-fns для форматирования дат
+- **API**: The Movie Database (TMDb)
+
+## Установка
+
+1. Склонируйте репозиторий:
+
+   ```bash
+   git clone https://github.com/your-username/movie-catalog.git
+   cd movie-catalog
+2. Установите зависимости:
+    ```bash
+   npm install
+3. Создайте файл .env в корневой директории и добавьте API-ключ:
+    ```bash
+   VITE_API_KEY=your_tmdb_api_key
+4. Запустите приложение:
+    ```bash
+    npm run dev
+## Скриншоты

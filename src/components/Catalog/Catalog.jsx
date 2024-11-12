@@ -2,7 +2,7 @@
 import s from './Catalog.module.css';
 import Card from '../Card/Card';
 import { format } from 'date-fns';
-import defaultImage from '../Card/img/defaultImage.jpg';
+import defaultImage from '../Catalog/img/defaultImage.jpg';
 import { useMovieContext } from '../../context/MovieContext';
 import { Rate } from 'antd';
 

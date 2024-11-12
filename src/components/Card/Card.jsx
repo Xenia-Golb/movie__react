@@ -8,10 +8,6 @@ function Card({ title, date, description, image, genre, rating, addRate }) {
         className={s['card-movie__img']}
         src={image}
         alt={`${title} poster`}
-        onError={(e) => {
-          e.target.src = './img/defaultImage.jpg';
-          e.target.alt = 'Default movie poster';
-        }}
       />
       <div className={s['card-movie__info']}>
         <h3 className={s['title']}>{title}</h3>
