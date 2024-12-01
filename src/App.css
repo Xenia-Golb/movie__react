@@ -5,6 +5,16 @@
   font-family: 'Inter', sans-serif;
 }
 
+.app {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 100vw;
+  padding-left: 200px;
+  padding-right: 200px;
+}
+
 .app-container {
   display: flex;
   flex-direction: column;
@@ -18,51 +28,6 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-}
-
-.ant-tabs {
-  border-radius: 10px;
-  padding: 32px;
-  align-items: center;
-}
-
-.ant-tabs-tab {
-  font-weight: 400;
-  size: 14px;
-  line-height: 22px;
-  background-color: #fff;
-}
-
-.ant-tabs-nav {
-  max-width: 146px;
-}
-
-.ant-tabs-tabpane {
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 0 0 10px 10px;
-}
-
-.custom-input {
-  width: 52vw;
-  font-size: 16px;
-  padding: 9px 12px;
-}
-
-/* .ant-pagination {
-  margin-top: 24px;
-  padding-bottom: 24px;
-  font-family: 'Inter', sans-serif serif;
-} */
-
-.ant-pagination .ant-pagination-item-active {
-  background-color: #1890ff;
-  border-color: #1890ff;
-  color: #000000a6;
-}
-
-.ant-pagination .ant-pagination-item-active a {
-  color: #ffffff;
 }
 
 @media (max-width: 768px) {

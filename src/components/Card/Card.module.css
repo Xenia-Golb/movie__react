@@ -1,6 +1,6 @@
 .card-movie {
-  min-width: 451px;
-  max-height: 299px;
+  min-width: 401px;
+  max-height: 280px;
   display: flex;
   gap: 5px;
   box-shadow: 0px 4px 12px 0px #00000026;
@@ -21,18 +21,18 @@
 
     .title {
       font-weight: 400;
-      font-size: 20px;
+      font-size: 14px;
       line-height: 28px;
     }
 
     .date {
-      font-size: 12px;
+      font-size: 10px;
       line-height: 22px;
       color: #827e7e;
     }
 
     .description {
-      font-size: 12px;
+      font-size: 10px;
       line-height: 22px;
       font-weight: 400;
     }

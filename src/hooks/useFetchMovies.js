@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import { fetchMovies } from '../service/index';
 
 const useFetchMovies = (baseUrl) => {
   const [movies, setMovies] = useState([]);
@@ -8,7 +9,6 @@ const useFetchMovies = (baseUrl) => {
 
   const fetchData = useCallback(
     async (query, page = 1) => {
-      // Проверка на наличие запроса
       if (!query) {
         setMovies([]);
         setTotalPages(1);
@@ -19,17 +19,8 @@ const useFetchMovies = (baseUrl) => {
       setError(null);
 
       try {
-        const response = await fetch(
-          `${baseUrl}${page}&query=${encodeURIComponent(query)}`,
-        );
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.status_message || 'Failed to fetch movies');
-        }
-        const data = await response.json();
-
-        // Проверка, что данные получены и результаты есть
-        if (data && data.results) {
+        const data = await fetchMovies(query, page);
+        if (data?.results) {
           setMovies(data.results);
           setTotalPages(data.total_pages);
         } else {

@@ -25,20 +25,27 @@ Movie Catalog — это приложение для поиска и оценк�
    ```bash
    git clone https://github.com/your-username/movie-catalog.git
    cd movie-catalog
+   ```
+
 2. Установите зависимости:
-    ```bash
+   ```bash
    npm install
+   ```
 3. Создайте файл .env в корневой директории и добавьте API-ключ:
-    ```bash
+   ```bash
    VITE_API_KEY=your_tmdb_api_key
+   ```
 4. Запустите приложение:
-    ```bash
-    npm run dev
+   ```bash
+   npm run dev
+   ```
+
 ## Скриншоты
 
-![layout](/public/search.png);
+![layout](/src/assets/img/search.png);
 
-![layout](/public/rated.png);
+![layout](/src/assets/img/rated.png);
 
-## Сайт 
+## Сайт
+
 https://xenia-golb.github.io/movie__react/

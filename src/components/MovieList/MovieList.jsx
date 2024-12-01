@@ -66,7 +66,7 @@ function MovieList({ movies }) {
             genre={
               genreList.length > 0 ? (
                 <div className={s.genres}>
-                  {genreList.map((genre) => (
+                  {genreList.slice(3).map((genre) => (
                     <span className={s.genre} key={genre}>
                       {genre}
                     </span>
