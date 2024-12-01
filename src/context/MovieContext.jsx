@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { fetchGenres, createSession, rateMovie } from '../service/movieService';
+import { fetchGenres, createSession, rateMovie } from '../service/index';
 
 const MovieContext = createContext();
 
