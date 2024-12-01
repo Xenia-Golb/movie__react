@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
-import s from './Catalog.module.css';
+import s from './MovieList.module.css';
 import Card from '../Card/Card';
 import { format } from 'date-fns';
-import defaultImage from '../Catalog/img/defaultImage.jpg';
+import defaultImage from '../../assets/img/defaultImg.png';
 import { useMovieContext } from '../../context/MovieContext';
 import { Rate } from 'antd';
 
@@ -13,7 +13,7 @@ const getRatingColor = (rating) => {
   return '#66E900';
 };
 
-function Catalog({ movies }) {
+function MovieList({ movies }) {
   const { rateMovie, genres } = useMovieContext();
 
   const getGenres = (genreIds) => {
@@ -101,4 +101,4 @@ function Catalog({ movies }) {
   );
 }
 
-export default Catalog;
+export default MovieList;

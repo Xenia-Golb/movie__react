@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import './App.css';
-import Catalog from './components/Catalog/Catalog';
+import MovieList from './components/MovieList/MovieList';
 import { Input, Tabs, Spin, Alert, Pagination } from 'antd';
 import { debounce } from 'lodash';
 import { useMovieContext } from './context/MovieContext';
@@ -73,7 +73,7 @@ function App() {
           {loading && <Spin size="large" />}
           {renderError()}
           {renderNoResults()}
-          <Catalog movies={movies} />
+          <MovieList movies={movies} />
           <Pagination
             current={currentPage}
             total={totalPages}
@@ -99,7 +99,7 @@ function App() {
           {ratedMovies.length === 0 && !contextLoading ? (
             <Alert message="No rated movies" type="info" />
           ) : (
-            <Catalog movies={ratedMovies} />
+            <MovieList movies={ratedMovies} />
           )}
         </>
       ),
