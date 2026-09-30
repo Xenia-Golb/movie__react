@@ -2,10 +2,7 @@ import httpx
 
 from app.config import settings
 
-
 TMDB_BASE_URL = "https://api.themoviedb.org/3"
-
-
 async def get_movie_from_tmdb(tmdb_id: int):
     url = f"{TMDB_BASE_URL}/movie/{tmdb_id}"
 
@@ -112,8 +109,6 @@ async def create_guest_session():
         response.raise_for_status()
 
         return response.json()
-
-
 async def rate_movie(
     tmdb_id: int,
     value: float | None,

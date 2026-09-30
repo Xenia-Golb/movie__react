@@ -3,4 +3,5 @@ from app.schemas.movie import (
     MovieRating,
     MovieResponse,
     MoviesResponse,
+    MovieUpdate
 )

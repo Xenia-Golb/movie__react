@@ -32,3 +32,10 @@ class MoviesResponse(BaseModel):
     offset: int
 class MovieRating(BaseModel):
     value: float | None = None
+class MovieUpdate(BaseModel):
+    title: str | None = None
+    overview: str | None = None
+    release_date: date | None = None
+    poster_path: str | None = None
+    vote_average: float | None = None
+    runtime: int | None = None

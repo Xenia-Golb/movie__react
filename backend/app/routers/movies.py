@@ -1,10 +1,11 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException,Response, status
+
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from app.database import SessionLocal
 from app.models import Movie
-from app.schemas import MovieRating, MovieResponse, MoviesResponse
+from app.schemas import MovieRating, MovieResponse, MoviesResponse,MovieUpdate
 from app.services import (
     create_guest_session,
     discover_movies,
@@ -130,7 +131,61 @@ async def get_movie_genres():
 async def get_tmdb_movie(tmdb_id: int):
     return await get_movie_from_tmdb(tmdb_id)
 
+@router.put("/{movie_id}", response_model=MovieResponse)
+def update_movie(
+    movie_id: int,
+    movie_data: MovieUpdate,
+):
+    db: Session = SessionLocal()
 
+    try:
+        movie = db.get(Movie, movie_id)
+
+        if movie is None:
+            raise HTTPException(
+                status_code=404,
+                detail="Movie not found",
+            )
+
+        update_data = movie_data.model_dump(
+            exclude_unset=True
+        )
+
+        for field, value in update_data.items():
+            setattr(movie, field, value)
+
+        db.commit()
+        db.refresh(movie)
+
+        return movie
+
+    finally:
+        db.close()
+@router.delete(
+    "/{movie_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
+def delete_movie(movie_id: int):
+    db: Session = SessionLocal()
+
+    try:
+        movie = db.get(Movie, movie_id)
+
+        if movie is None:
+            raise HTTPException(
+                status_code=404,
+                detail="Movie not found",
+            )
+
+        db.delete(movie)
+        db.commit()
+
+        return Response(
+            status_code=status.HTTP_204_NO_CONTENT
+        )
+
+    finally:
+        db.close()
 @router.get("/{movie_id}", response_model=MovieResponse)
 def get_movie(movie_id: int):
     db: Session = SessionLocal()

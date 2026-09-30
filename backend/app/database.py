@@ -10,7 +10,6 @@ SessionLocal = sessionmaker(
     autoflush=False,
     autocommit=False,
 )
-
-
 class Base(DeclarativeBase):
     pass
+
